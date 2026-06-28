@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Cors
+Werkzeug
+flask-login
+mysql-connector-python
+python-dotenv
+qrcode
+pillow
+Flask-SocketIO
