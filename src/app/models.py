@@ -1,5 +1,6 @@
 from app.extensions import db, login_manager
 from dataclasses import dataclass
+from datetime import datetime
 
 @dataclass
 class Payment(db.Model):
@@ -9,5 +10,5 @@ class Payment(db.Model):
     paid: bool = db.Column(db.Boolean, default=False)
     bank_payment_id: int = db.Column(db.Integer, nullable=True)
     qr_code: str = db.Column(db.String(100), nullable=True)
-    expiration_date = db.Column(db.DateTime)
+    expiration_date: datetime = db.Column(db.DateTime)
     
