@@ -1,24 +1,10 @@
 import os
 from flask import Flask
-from flask.json.provider import DefaultJSONProvider
 from werkzeug.local import LocalProxy
-from dataclasses import is_dataclass, asdict
 from app.extensions import db, login_manager
-
-
-class CustomJSONProvider(DefaultJSONProvider):
-    def default(self, o):
-        if isinstance(o, LocalProxy):
-            o = o._get_current_object()
-            
-        if is_dataclass(o):
-            return asdict(o)
-        
-        return super().default(o)
     
 def create_app():
     app = Flask(__name__)
-    app.json = CustomJSONProvider(app)
     
     db_user = os.getenv('MYSQL_USER')
     db_password = os.getenv('MYSQL_PASSWORD')
@@ -26,7 +12,7 @@ def create_app():
     db_name = os.getenv('MYSQL_DATABASE')
     secret_key = os.getenv('SECRET_KEY')
     
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{db_user}:{db_password}@{db_user}/{db_name}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{db_user}:{db_password}@{db_host}/{db_name}'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = secret_key
     
