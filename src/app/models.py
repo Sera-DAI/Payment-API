@@ -1,4 +1,4 @@
-from app.extensions import db, login_manager
+from app.extensions import db
 from dataclasses import dataclass
 from datetime import datetime
 
