@@ -19,7 +19,7 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     
-    from app.payments.mold import payments_bp
+    from app.payments.schemas import payments_bp
     app.register_blueprint(payments_bp)
     
     with app.app_context():
