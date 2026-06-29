@@ -216,3 +216,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+src/app/static/img/qrcode/*
+!src/app/static/img/qrcode/.gitkeep
