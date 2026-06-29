@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento do Pedido</title>
+    <!-- O caminho aponta para a pasta static que mapeamos -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <main class="payment-container">
+        <header class="payment-header">
+            <h2>Área de Pagamento</h2>
+            <p>Escaneie o QR Code abaixo para concluir</p>
+        </header>
+
+        <section class="qrcode-section">
+            <div class="qrcode-box">
+                <img src="{{ qrcode_url }}" alt="QR Code do Pedido">
+            </div>
+            <!-- Data de expiração vinda dinamicamente do banco/schema -->
+            <p class="expiration-text">Esse QR Code expira em: <strong>{{ expiration_date }}</strong></p>
+        </section>
+
+        <section class="value-highlight">
+            <span>Valor a pagar:</span>
+            <div class="payment-amount">R$ {{ value }}</div>
+        </section>
+
+        <hr class="divider">
+
+        <footer class="order-details">
+            <div class="detail-group">
+                <span>Número do Pedido:</span>
+                <!-- Número do pedido dinâmico -->
+                <strong>#{{ payment_id }}</strong>
+            </div>
+            <div class="detail-group">
+                <span>Status:</span>
+                <span class="status-badge">Aguardando Pagamento</span>
+            </div>
+        </footer>
+    </main>
+
+</body>
+</html>
