@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from app.payments.mold import payments_bp
+from app.payments.schemas import payments_bp
 from datetime import datetime, timedelta
 from app.models import Payment
 from app.extensions import db
