@@ -22,6 +22,7 @@ def create_app():
     db.init_app(app)
     socketio.init_app(app)
     
+    from app.payments import events
     from app.payments.schemas import payments_bp
     app.register_blueprint(payments_bp)
     
