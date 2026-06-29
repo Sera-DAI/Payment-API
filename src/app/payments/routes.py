@@ -41,9 +41,8 @@ def get_image(file_name):
 @payments_bp.route('pix/<int:payment_id>', methods=['GET'])
 def payment_pix_page(payment_id):
     payment = Payment.query.filter_by(id=payment_id).first()
-    qrcode_route_url = url_for('payment.get_image', file_name=payment.qr_code) #type: ignore - fazer a rota caso não tenha valor
     payment_information = {
-        "qrcode_url": qrcode_route_url, #type: ignore - fazer a rota caso não tenha valor
+        "qrcode_url": url_for('payment.get_image', file_name=payment.qr_code), #type: ignore - fazer a rota caso não tenha valor
         "value": payment.value, #type: ignore - fazer a rota caso não tenha valor
         "payment_id": payment_id,
         "expiration_date": payment.expiration_date #type: ignore - fazer a rota caso não tenha valor
