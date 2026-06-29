@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, send_file, render_template, url_for
 from app.payments.schemas import payments_bp
 from datetime import datetime, timedelta
 from app.models import Payment
@@ -34,8 +34,19 @@ def pix_confirmation():
         "Message": "Payment has been created."
     })
 
-@payments_bp.route('/pix/<int:payment_id>', methods=['GET'])
+@payments_bp.route('/pix/qrcode/<file_name>', methods=['GET'])
+def get_image(file_name):
+    return send_file(f'static/img/qrcode/{file_name}.png', mimetype='image/png', as_attachment=False)
+
+@payments_bp.route('pix/<int:payment_id>', methods=['GET'])
 def payment_pix_page(payment_id):
-    return jsonify({
-        "Message": "Test complete"
-    })
+    payment = Payment.query.filter_by(id=payment_id).first()
+    qrcode_route_url = url_for('payment.get_image', file_name=payment.qr_code) #type: ignore - fazer a rota caso não tenha valor
+    payment_information = {
+        "qrcode_url": qrcode_route_url, #type: ignore - fazer a rota caso não tenha valor
+        "value": payment.value, #type: ignore - fazer a rota caso não tenha valor
+        "payment_id": payment_id,
+        "expiration_date": payment.expiration_date #type: ignore - fazer a rota caso não tenha valor
+    }
+    
+    return render_template('payments/checkout.html', **payment_information)
