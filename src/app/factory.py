@@ -2,6 +2,9 @@ import os
 from flask import Flask
 from werkzeug.local import LocalProxy
 from app.extensions import db
+from flask_socketio import SocketIO
+
+socketio = SocketIO(cors_allowed_origins="*")
     
 def create_app():
     app = Flask(__name__)
@@ -17,7 +20,7 @@ def create_app():
     app.config['SECRET_KEY'] = secret_key
     
     db.init_app(app)
-    
+    socketio.init_app(app)
     
     from app.payments.schemas import payments_bp
     app.register_blueprint(payments_bp)
