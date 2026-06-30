@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from app.models import Payment
 from app.extensions import db
 from app.strategies.pix import Pix
+from app.factory import socketio
 
 @payments_bp.route('/pix', methods=['POST'])
 def create_payment_pix():
@@ -32,7 +33,7 @@ def create_payment_pix():
 def pix_confirmation():
     data = request.get_json()
     
-    if "bank_payment_id" not in data and "value" not in data:
+    if "bank_payment_id" not in data or "value" not in data:
         return jsonify({
             "Message": "Invalid payment data"
         }), 400
@@ -51,6 +52,7 @@ def pix_confirmation():
         
     payment.paid = True
     db.session.commit()
+    socketio.emit(f'payment-confirmed-{payment.id}')
     return jsonify({
         "Message": "Payment is been confirmed."
     })
@@ -70,3 +72,18 @@ def payment_pix_page(payment_id):
     }
     
     return render_template('payments/checkout.html', **payment_information)
+
+@payments_bp.route('pix/confirmed/<int:payment_id>', methods=['GET'])
+def confirmed_pix_page(payment_id):
+    payment = Payment.query.filter_by(id=payment_id).first()
+    
+    if not payment or payment.paid == False:
+        return jsonify({"Message": "Payment transaction not found"}), 404
+        
+    payment_information = {
+        "value": payment.value,
+        "payment_id": payment_id,
+        "bank_payment_id": payment.bank_payment_id
+    }
+    
+    return render_template('payments/confirmed.html', **payment_information)
