@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Não Encontrada - 404</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        /* Estilos e Animações Específicas para o Erro 404 */
+        .error-animation {
+            margin: 25px auto;
+        }
+        
+        .error-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 4;
+            stroke: #f43f5e; /* Tom de vermelho elegante */
+            stroke-miterlimit: 10;
+            box-shadow: inset 0px 0px 0px #f43f5e;
+            animation: fill-error .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .error-icon__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 4;
+            stroke-miterlimit: 10;
+            stroke: #f43f5e;
+            fill: none;
+            animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        
+        .error-icon__path {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            stroke: #ffffff;
+            stroke-width: 4;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+
+        .error-icon__dot {
+            fill: #ffffff;
+            opacity: 0;
+            animation: fade-in 0.3s ease-in-out 0.8s forwards;
+        }
+        
+        @keyframes fill-error {
+            100% { box-shadow: inset 0px 0px 0px 40px #f43f5e; }
+        }
+
+        @keyframes fade-in {
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="payment-container">
+        <header class="payment-header">
+            <h2>Página Não Encontrada</h2>
+            <p>A URL solicitada não pôde ser encontrada</p>
+        </header>
+
+        <!-- Animação do Ícone de Erro 404 (Exclamação) -->
+        <section class="error-animation">
+            <svg class="error-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="error-icon__circle" cx="26" cy="26" r="25" fill="none"/>
+                <!-- Linha vertical da exclamação -->
+                <path class="error-icon__path" fill="none" stroke-linecap="round" d="M26 15 v16"/>
+                <!-- Ponto da exclamação -->
+                <circle class="error-icon__dot" cx="26" cy="37" r="4.2"/>
+            </svg>
+        </section>
+
+        <!-- Destaque do Erro -->
+        <section class="value-highlight">
+            <span>Erro retornado:</span>
+            <div class="payment-amount" style="color: #f43f5e;">Status 404</div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Detalhes do Erro -->
+        <footer class="order-details">
+            <div class="detail-group">
+                <span>Tipo do Erro:</span>
+                <strong>Not Found</strong>
+            </div>
+            <div class="detail-group">
+                <span>Status da Conexão:</span>
+                <span class="status-badge" style="background-color: #ffe4e6; color: #e11d48;">Página Inexistente</span>
+            </div>
+        </footer>
+
+        <!-- Botão de Ação -->
+        <section class="action-button-group">
+            <a href="/payment/pix" class="btn-primary">Voltar para Pagamentos</a>
+        </section>
+    </main>
+
+</body>
+</html>
