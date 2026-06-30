@@ -1,4 +1,5 @@
-from app.factory import socketio
+from app.factory import socketio 
+from flask_socketio import disconnect
 
 @socketio.on('connect')
 def handle_connect():
@@ -8,4 +9,6 @@ def handle_connect():
 def handle_confirm_receipt(data):
     payment_id = data.get('payment_id')
     status = data.get('status')
-    print(f'[SERVER]: Client confirmed receipt of payment #{payment_id} with status: {status}')
+    print(f"[SERVER]: Client confirmed receipt of payment #{payment_id} with status: {status}")
+    print("[SERVER]: Client desconnected")
+    disconnect()
