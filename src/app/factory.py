@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 from werkzeug.local import LocalProxy
 from app.extensions import db
 from flask_socketio import SocketIO
@@ -21,6 +21,10 @@ def create_app():
     
     db.init_app(app)
     socketio.init_app(app)
+    
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('payments/404.html'), 404
     
     from app.payments import events
     from app.payments.schemas import payments_bp
