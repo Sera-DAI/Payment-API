@@ -39,7 +39,7 @@ def test_pix_confirmation_success(client, app):
     assert data["Message"] == "Payment is been confirmed."
     with app.app_context():
         p = db.session.get(Payment, payment_id)
-        assert p.paid is True
+        assert p.paid is True #type: ignore
 
 def test_pix_confirmation_invalid_value(client, app):
     with app.app_context():
