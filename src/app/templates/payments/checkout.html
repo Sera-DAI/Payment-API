@@ -4,7 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagamento do Pedido</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link class="page-style" rel="stylesheet" href="/static/css/style.css">
+    <style>
+        /* Estilos e Animação de Espera */
+        .waiting-animation {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .waiting-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 4;
+            stroke: #d97706; /* Cor âmbar */
+            stroke-miterlimit: 10;
+            position: relative;
+            margin: 0 auto;
+            background: #fef3c7; /* Fundo âmbar suave */
+            box-shadow: 0 4px 10px rgba(217, 119, 6, 0.15);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .waiting-icon__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 0;
+            stroke-width: 4;
+            stroke: #d97706;
+            fill: none;
+        }
+
+        .waiting-icon__hand-long {
+            stroke: #b45309;
+            stroke-width: 4;
+            transform-origin: 26px 26px;
+            animation: spin 10s linear infinite;
+        }
+
+        .waiting-icon__hand-short {
+            stroke: #b45309;
+            stroke-width: 4;
+            transform-origin: 26px 26px;
+            animation: spin 120s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 10px rgba(217, 119, 6, 0.15);
+            }
+            50% {
+                transform: scale(1.04);
+                box-shadow: 0 6px 15px rgba(217, 119, 6, 0.3);
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -13,6 +75,17 @@
             <h2>Área de Pagamento</h2>
             <p>Escaneie o QR Code abaixo para concluir</p>
         </header>
+
+        <!-- Animação de Espera no mesmo padrão de ícone dos outros templates -->
+        <section class="waiting-animation">
+            <svg class="waiting-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="waiting-icon__circle" cx="26" cy="26" r="25" fill="none"/>
+                <!-- Ponteiro longo (minutos/segundos do relógio) -->
+                <path class="waiting-icon__hand-long" fill="none" stroke-linecap="round" d="M26 26 L26 12"/>
+                <!-- Ponteiro curto (horas do relógio) -->
+                <path class="waiting-icon__hand-short" fill="none" stroke-linecap="round" d="M26 26 L34 26"/>
+            </svg>
+        </section>
 
         <section class="qrcode-section">
             <div class="qrcode-box">
@@ -39,6 +112,7 @@
             </div>
         </footer>
     </main>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
         var socket = io.connect('{{host}}');
@@ -54,8 +128,8 @@
             });
             setTimeout(function() {
                 location.reload();
-            }, 1000);   
+            }, 1000);
         });
     </script>
 </body>
-</html> 
+</html>
