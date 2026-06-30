@@ -99,3 +99,93 @@ body {
     font-size: 0.8rem;
     font-weight: 600;
 }
+
+/* Success Status Badge */
+.status-badge-success {
+    background-color: #d1fae5;
+    color: #065f46;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* Success Checkmark Animation */
+.success-animation {
+    margin: 25px auto;
+}
+
+.checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 4;
+    stroke: #10b981;
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #10b981;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    position: relative;
+    margin: 0 auto;
+}
+
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 4;
+    stroke-miterlimit: 10;
+    stroke: #10b981;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke: #ffffff;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% { stroke-dashoffset: 0; }
+}
+
+@keyframes scale {
+    0%, 100% { transform: none; }
+    50% { transform: scale3d(1.1, 1.1, 1); }
+}
+
+@keyframes fill {
+    100% { box-shadow: inset 0px 0px 0px 40px #10b981; }
+}
+
+/* Action Button Styles */
+.action-button-group {
+    margin-top: 25px;
+}
+
+.btn-primary {
+    display: inline-block;
+    width: 100%;
+    padding: 12px;
+    background-color: #0f172a;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+    background-color: #1e293b;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
