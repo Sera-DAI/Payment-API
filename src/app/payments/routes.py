@@ -65,7 +65,7 @@ def payment_pix_page(payment_id):
     payment = Payment.query.filter_by(id=payment_id).first()
     
     if payment.paid: #type:ignore
-        payment_information = {
+        payment_information = { 
         "value": payment.value, #type: ignore
         "payment_id": payment_id,
         "bank_payment_id": payment.bank_payment_id #type: ignore
@@ -80,18 +80,3 @@ def payment_pix_page(payment_id):
     }
     
     return render_template('payments/checkout.html', **payment_information)
-
-# @payments_bp.route('pix/confirmed/<int:payment_id>', methods=['GET'])
-# def confirmed_pix_page(payment_id):
-#     payment = Payment.query.filter_by(id=payment_id).first()
-    
-#     if not payment or payment.paid == False:
-#         return jsonify({"Message": "Payment transaction not found"}), 404
-        
-#     payment_information = {
-#         "value": payment.value,
-#         "payment_id": payment_id,
-#         "bank_payment_id": payment.bank_payment_id
-#     }
-    
-#     return render_template('payments/confirmed.html', **payment_information)
