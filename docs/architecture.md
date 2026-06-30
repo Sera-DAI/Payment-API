@@ -72,23 +72,41 @@ To update the payment status on the user's screen reactively (without relying on
 
 ---
 
-## 6. Execution Flow (Payment Creation)
+## 6. Execution Flow (Full Payment Lifecycle)
 
-The diagram below describes the sequence of events from the initial payment request to the checkout page rendering:
+The diagram below describes the sequence of events from the initial payment request, through the checkout page rendering, up to the bank confirmation webhook, real-time WebSocket notification, and automatic redirection to the success screen:
 
 ```mermaid
 sequenceDiagram
     autonumber
-    Client/User->>API (routes): POST /payment/pix {"value": 100.0}
-    Note over API (routes): Validates data and creates<br/>local Payment object.
-    API (routes)->>Strategy (Pix): create_payment()
-    Note over Strategy (Pix): Generates unique ID (UUID)<br/>and saves QR Code image.
-    Strategy (Pix)-->>API (routes): Returns bank_payment_id and qr_code_path
-    Note over API (routes): Updates and persists the<br/>Payment object in MySQL.
-    API (routes)-->>Client/User: Returns payment confirmation response
     
-    Client/User->>API (routes): GET /payment/pix/<payment_id>
-    API (routes)->>DB: Queries Payment by ID
-    DB-->>API (routes): Payment details
-    API (routes)-->>Client/User: Renders checkout.html with dynamic QR Code
+    rect rgb(240, 245, 255)
+        Note over Client/User, API (routes): Phase 1: Creation & Checkout Rendering
+        Client/User->>API (routes): POST /payment/pix {"value": 100.0}
+        Note over API (routes): Validates data and creates<br/>local Payment object.
+        API (routes)->>Strategy (Pix): create_payment()
+        Note over Strategy (Pix): Generates unique ID (UUID)<br/>and saves QR Code image.
+        Strategy (Pix)-->>API (routes): Returns bank_payment_id and qr_code_path
+        Note over API (routes): Updates and persists the<br/>Payment object in MySQL.
+        API (routes)-->>Client/User: Returns payment confirmation response
+        
+        Client/User->>API (routes): GET /payment/pix/<payment_id>
+        API (routes)->>DB: Queries Payment by ID
+        DB-->>API (routes): Payment details
+        API (routes)-->>Client/User: Renders checkout.html with dynamic QR Code
+    end
+    
+    rect rgb(240, 255, 240)
+        Note over Client/User, API (routes): Phase 2: Confirmation & Real-Time Redirection
+        Note over API (routes): External webhook simulated
+        Bank/Processor->>API (routes): POST /payment/pix/confirmation {"bank_payment_id": "...", "value": 100.0}
+        Note over API (routes): Validates transaction details<br/>and matches value.
+        API (routes)->>DB: Updates payment.paid = True
+        API (routes)->>Socket.IO: socketio.emit(payment-confirmed-{id})
+        Socket.IO-->>Client/User: Push Event: payment-confirmed-id
+        Note over Client/User: Client JS intercepts event<br/>and redirects browser.
+        Client/User->>API (routes): GET /payment/pix/confirmed/<payment_id>
+        API (routes)->>DB: Queries Payment details
+        API (routes)-->>Client/User: Renders confirmed.html (Success Screen)
+    end
 ```

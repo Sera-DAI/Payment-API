@@ -75,3 +75,8 @@ For a deeper understanding of the system's design and features, refer to the fil
    - Overview of Design Patterns (Application Factory, Strategy, Blueprints).
    - Sequence diagram illustrating the payment generation flow.
    - Database model definition and schemas.
+   
+2. 🗺️ **[Routes and Modules Mapping](file:///home/jhonny/Git/Payment-API/docs/routes_and_modules.md)**
+   - Detailed endpoint definitions (`POST /payment/pix`, `GET /payment/pix/<payment_id>`, etc.).
+   - Full application package structure breakdown.
+   - Real-time Socket.IO events.
