@@ -56,6 +56,13 @@ python src/run.py
 The Flask server will start on its default port: `http://127.0.0.1:5000/`.  
 > *Note: Database tables will be automatically created by SQLAlchemy upon the application's first initialization.*
 
+### 5. Running Tests
+Run the automated test suite using pytest to verify routes and socket connections:
+
+```bash
+.venv/bin/pytest
+```
+
 ---
 
 ## 🛠️ Technology Stack
@@ -64,6 +71,7 @@ The Flask server will start on its default port: `http://127.0.0.1:5000/`.
 - **Database & ORM**: MySQL & Flask-SQLAlchemy
 - **Real-Time Communication**: Flask-SocketIO (WebSockets)
 - **QR Code Generation**: qrcode (Pillow)
+- **Automated Testing**: pytest & SQLite (in-memory)
 
 ---
 

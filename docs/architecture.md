@@ -27,6 +27,8 @@ The system is built using **Python** and the **Flask** microframework ecosystem:
 - **Flask-SocketIO**: WebSocket support enabling real-time communication between the client and server.
 - **MySQL**: Relational database used to persist payment transactions.
 - **qrcode (Pillow)**: Libraries used to generate physical QR Code images.
+- **pytest**: Framework for testing the application routes and real-time events.
+- **SQLite**: Database used in-memory during testing.
 
 ---
 
@@ -35,7 +37,7 @@ The system is built using **Python** and the **Flask** microframework ecosystem:
 The project is structured following software design best practices to ensure scalability and readability:
 
 ### 3.1. Application Factory Pattern
-The creation of the Flask application and initialization of its extensions are centralized within the [create_app](file:///home/jhonny/Git/Payment-API/src/app/factory.py#L9) function in the [factory.py](file:///home/jhonny/Git/Payment-API/src/app/factory.py) module. This prevents circular dependencies and simplifies configuration across multiple environments (development, testing, production).
+The creation of the Flask application and initialization of its extensions are centralized within the [create_app](file:///home/jhonny/Git/Payment-API/src/app/factory.py#L9) function in the [factory.py](file:///home/jhonny/Git/Payment-API/src/app/factory.py) module. This prevents circular dependencies, simplifies configuration, and allows injecting test configurations (using `config_override`) during automated tests.
 
 ### 3.2. Strategy Pattern
 The logic for generating and integrating different payment methods is encapsulated using the Strategy pattern. The [Pix](file:///home/jhonny/Git/Payment-API/src/app/strategies/pix.py#L6) class in [pix.py](file:///home/jhonny/Git/Payment-API/src/app/strategies/pix.py) implements the payment creation interface. This approach allows adding new payment methods (e.g., Credit Card, PicPay) without altering the main routing flow of the system.
@@ -67,14 +69,15 @@ Payment information persistence is structured into a single table represented by
 To update the payment status on the user's screen reactively (without relying on client-side polling), the `Flask-SocketIO` library was integrated:
 
 1. When the client accesses the checkout page ([checkout.html](file:///home/jhonny/Git/Payment-API/src/app/templates/payments/checkout.html)), a WebSocket channel is established using the Socket.IO client library.
-2. The server monitors connection events from new clients via the [handle_connect](file:///home/jhonny/Git/Payment-API/src/app/payments/events.py#L4) handler configured in the [events.py](file:///home/jhonny/Git/Payment-API/src/app/payments/events.py) module.
-3. Upon receiving a payment confirmation webhook from the external processor, the system can emit a WebSocket event notifying the frontend to update the order status in real time.
+2. The server monitors connection events from new clients via the `handle_connect` handler configured in the [events.py](file:///home/jhonny/Git/Payment-API/src/app/payments/events.py) module.
+3. Upon receiving a payment confirmation webhook from the external processor, the system emits a WebSocket event `payment-confirmed-{payment_id}` notifying the frontend.
+4. The client intercepts the event and reloads the page, which dynamically renders the success screen since the payment has been marked as paid.
 
 ---
 
 ## 6. Execution Flow (Full Payment Lifecycle)
 
-The diagram below describes the sequence of events from the initial payment request, through the checkout page rendering, up to the bank confirmation webhook, real-time WebSocket notification, and automatic redirection to the success screen:
+The diagram below describes the sequence of events from the initial payment request, through the checkout page rendering, up to the bank confirmation webhook, real-time WebSocket notification, and automatic reload:
 
 ```mermaid
 sequenceDiagram
@@ -91,22 +94,34 @@ sequenceDiagram
         API (routes)-->>Client/User: Returns payment confirmation response
         
         Client/User->>API (routes): GET /payment/pix/<payment_id>
-        API (routes)->>DB: Queries Payment by ID
+        API (routes)->>DB: Queries Payment by ID (not paid)
         DB-->>API (routes): Payment details
         API (routes)-->>Client/User: Renders checkout.html with dynamic QR Code
     end
     
     rect rgb(240, 255, 240)
-        Note over Client/User, API (routes): Phase 2: Confirmation & Real-Time Redirection
+        Note over Client/User, API (routes): Phase 2: Confirmation & Real-Time Reload
         Note over API (routes): External webhook simulated
         Bank/Processor->>API (routes): POST /payment/pix/confirmation {"bank_payment_id": "...", "value": 100.0}
         Note over API (routes): Validates transaction details<br/>and matches value.
         API (routes)->>DB: Updates payment.paid = True
         API (routes)->>Socket.IO: socketio.emit(payment-confirmed-{id})
         Socket.IO-->>Client/User: Push Event: payment-confirmed-id
-        Note over Client/User: Client JS intercepts event<br/>and redirects browser.
-        Client/User->>API (routes): GET /payment/pix/confirmed/<payment_id>
-        API (routes)->>DB: Queries Payment details
+        Note over Client/User: Client JS intercepts event<br/>and reloads the browser window.
+        Client/User->>API (routes): GET /payment/pix/<payment_id> (Reload)
+        API (routes)->>DB: Queries Payment by ID (paid = True)
+        DB-->>API (routes): Payment details
         API (routes)-->>Client/User: Renders confirmed.html (Success Screen)
     end
 ```
+
+---
+
+## 7. Automated Testing Suite
+
+To ensure the reliability of the application's endpoints and real-time events, the project contains an automated testing suite implemented under the `/tests` folder:
+
+*   **Testing Tool**: Built with `pytest`.
+*   **Database Isolation**: Tests run against an isolated SQLite in-memory database (`sqlite:///:memory:`). Database tables are created at the start of each test and dropped right after execution.
+*   **HTTP Client Tests**: Test cases in [test_routes.py](file:///home/jhonny/Git/Payment-API/tests/test_routes.py) utilize Flask's native `test_client` to validate responses and HTTP codes for API routes.
+*   **WebSocket Tests**: Test cases in [test_socket.py](file:///home/jhonny/Git/Payment-API/tests/test_socket.py) use the Flask-SocketIO `test_client` to confirm connections and verify that real-time signals are emitted correctly when payments are processed.
