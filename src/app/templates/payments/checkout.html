@@ -46,8 +46,11 @@
     <script>
         var socket = io.connect('{{host}}');
         socket.on('connect', function() {
-            console.log("Connection on")
-        })
+            console.log("Connection on");
+        });
+        socket.on('payment-confirmed-{{ payment_id }}', function() {
+            window.location.href = '/payment/pix/confirmed/{{ payment_id }}';
+        });
     </script>
 </body>
 </html>
