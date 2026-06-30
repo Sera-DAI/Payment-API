@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Confirmado</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <main class="payment-container">
+        <header class="payment-header">
+            <h2>Pagamento Confirmado!</h2>
+            <p>Sua transação foi processada com sucesso</p>
+        </header>
+
+        <section class="success-animation">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+        </section>
+
+        <section class="value-highlight">
+            <span>Valor pago:</span>
+            <div class="payment-amount" style="color: #10b981;">R$ {{ value }}</div>
+        </section>
+
+        <hr class="divider">
+
+        <footer class="order-details">
+            <div class="detail-group">
+                <span>Número do Pedido:</span>
+                <strong>#{{ payment_id }}</strong>
+            </div>
+            <div class="detail-group">
+                <span>Status:</span>
+                <span class="status-badge-success">Pago com Sucesso</span>
+            </div>
+            {% if bank_payment_id %}
+            <div class="detail-group" style="margin-top: 5px; font-size: 0.8rem; color: #64748b;">
+                <span>ID da Transação:</span>
+                <span style="font-family: monospace; word-break: break-all;">{{ bank_payment_id }}</span>
+            </div>
+            {% endif %}
+        </footer>
+
+        <section class="action-button-group">
+            <a href="/payment/pix" class="btn-primary">Criar Novo Pagamento</a>
+        </section>
+    </main>
+
+</body>
+</html>
