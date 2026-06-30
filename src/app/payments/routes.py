@@ -63,7 +63,16 @@ def get_image(file_name):
 @payments_bp.route('pix/<int:payment_id>', methods=['GET'])
 def payment_pix_page(payment_id):
     payment = Payment.query.filter_by(id=payment_id).first()
+    
+    if payment.paid: #type:ignore
+        payment_information = {
+        "value": payment.value, #type: ignore
+        "payment_id": payment_id,
+        "bank_payment_id": payment.bank_payment_id #type: ignore
+    }
+        return render_template('payments/confirmed.html', **payment_information)
     payment_information = {
+        "payment_id": payment_id,
         "host": "http://127.0.0.1:5000", 
         "qrcode_url": url_for('payment.get_image', file_name=payment.qr_code), #type: ignore
         "value": payment.value, #type: ignore 
@@ -72,17 +81,17 @@ def payment_pix_page(payment_id):
     
     return render_template('payments/checkout.html', **payment_information)
 
-@payments_bp.route('pix/confirmed/<int:payment_id>', methods=['GET'])
-def confirmed_pix_page(payment_id):
-    payment = Payment.query.filter_by(id=payment_id).first()
+# @payments_bp.route('pix/confirmed/<int:payment_id>', methods=['GET'])
+# def confirmed_pix_page(payment_id):
+#     payment = Payment.query.filter_by(id=payment_id).first()
     
-    if not payment or payment.paid == False:
-        return jsonify({"Message": "Payment transaction not found"}), 404
+#     if not payment or payment.paid == False:
+#         return jsonify({"Message": "Payment transaction not found"}), 404
         
-    payment_information = {
-        "value": payment.value,
-        "payment_id": payment_id,
-        "bank_payment_id": payment.bank_payment_id
-    }
+#     payment_information = {
+#         "value": payment.value,
+#         "payment_id": payment_id,
+#         "bank_payment_id": payment.bank_payment_id
+#     }
     
-    return render_template('payments/confirmed.html', **payment_information)
+#     return render_template('payments/confirmed.html', **payment_information)
