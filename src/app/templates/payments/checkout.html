@@ -43,12 +43,19 @@
     <script>
         var socket = io.connect('{{host}}');
         socket.on('connect', function() {
-            console.log("Connection on");
+            console.log("[CLIENT]: Connection on");
+            console.log("[CLIENT]: Waiting payment");
         });
         socket.on('payment-confirmed-{{payment_id}}', function() {
-            console.log("payment confirmed")
-            location.reload();
+            console.log("[CLIENT]: Payment confirmed! Notifying the server...");
+            socket.emit('confirm_receipt_on_server', {
+            payment_id: '{{payment_id}}',
+                status: "success"
+            });
+            setTimeout(function() {
+                location.reload();
+            }, 1000);   
         });
     </script>
 </body>
-</html>
+</html> 
