@@ -65,10 +65,9 @@ def payment_pix_page(payment_id):
     payment = Payment.query.filter_by(id=payment_id).first()
     payment_information = {
         "host": "http://127.0.0.1:5000", 
-        "qrcode_url": url_for('payment.get_image', file_name=payment.qr_code), #type: ignore - fazer a rota caso não tenha valor
-        "value": payment.value, #type: ignore - fazer a rota caso não tenha valor
-        "payment_id": payment_id,
-        "expiration_date": payment.expiration_date #type: ignore - fazer a rota caso não tenha valor
+        "qrcode_url": url_for('payment.get_image', file_name=payment.qr_code), #type: ignore
+        "value": payment.value, #type: ignore 
+        "expiration_date": payment.expiration_date #type: ignore 
     }
     
     return render_template('payments/checkout.html', **payment_information)
