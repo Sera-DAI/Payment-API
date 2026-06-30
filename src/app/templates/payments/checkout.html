@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pagamento do Pedido</title>
-    <!-- O caminho aponta para a pasta static que mapeamos -->
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -19,7 +18,6 @@
             <div class="qrcode-box">
                 <img src="{{ qrcode_url }}" alt="QR Code do Pedido">
             </div>
-            <!-- Data de expiração vinda dinamicamente do banco/schema -->
             <p class="expiration-text">Esse QR Code expira em: <strong>{{ expiration_date }}</strong></p>
         </section>
 
@@ -33,7 +31,6 @@
         <footer class="order-details">
             <div class="detail-group">
                 <span>Número do Pedido:</span>
-                <!-- Número do pedido dinâmico -->
                 <strong>#{{ payment_id }}</strong>
             </div>
             <div class="detail-group">
@@ -48,8 +45,9 @@
         socket.on('connect', function() {
             console.log("Connection on");
         });
-        socket.on('payment-confirmed-{{ payment_id }}', function() {
-            window.location.href = '/payment/pix/confirmed/{{ payment_id }}';
+        socket.on('payment-confirmed-{{payment_id}}', function() {
+            console.log("payment confirmed")
+            location.reload();
         });
     </script>
 </body>
