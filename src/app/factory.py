@@ -6,7 +6,7 @@ from flask_socketio import SocketIO
 
 socketio = SocketIO(cors_allowed_origins="*")
     
-def create_app():
+def create_app(config_override=None):
     app = Flask(__name__)
     
     db_user = os.getenv('MYSQL_USER')
@@ -19,6 +19,9 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = secret_key
     
+    if config_override:
+        app.config.update(config_override)
+        
     db.init_app(app)
     socketio.init_app(app)
     
