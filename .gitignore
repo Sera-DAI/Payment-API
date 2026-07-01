@@ -219,3 +219,4 @@ __marimo__/
 
 src/app/static/img/qrcode/*
 !src/app/static/img/qrcode/.gitkeep
+.vscode
