@@ -2,7 +2,9 @@
 
 This documentation provides a detailed reference for all endpoints of the **Payment API** (specifically for the Pix payment flow). The API is built using Flask and supports real-time updates via **Socket.IO**.
 
-A Postman collection has been created and is available in the project's root directory: [API-Payment.postman_collection.json](file:///home/jhonny/Git/Payment-API/API-Payment.postman_collection.json).
+A Postman collection has been created and is available in the project's root directory: API-Payment.postman_collection.json.
+
+You can also check the documentation directly in Postman > [![Run in Postman](https://run.pstmn.io/button.svg)](https://documenter.getpostman.com/view/52076750/2sBY4HSNpL)
 
 ---
 
