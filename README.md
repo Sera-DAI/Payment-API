@@ -1,5 +1,22 @@
 # Payment-API
 
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=git,vscode,docker,py,arch,postman,windows,mysql,html,css" />
+  </a>
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/stats-Completed-green?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/python-3.14.6-blue?style=for-the-badge&logo=python&logoColor=white" />
+  <img src="https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white" />
+  <img src="https://img.shields.io/github/repo-size/Sera-DAI/Payment-API?style=for-the-badge" />
+  <img src="https://img.shields.io/github/last-commit/Sera-DAI/Payment-API?style=for-the-badge" />
+</p>
+<p align="center">
+  <img src="https://img.shields.io/badge/Tests-Postman%20Verified-orange?style=flat-square&logo=postman" />
+  <img src="https://img.shields.io/badge/Environment-Docker%20%2B%20MySQL-0275d8?style=flat-square&logo=docker" />
+</p>
+
 This is a payment processing and checkout API that implements the **Pix** payment method. Built using Python and Flask, the application simulates the complete payment lifecycle, from transaction creation in the database to QR Code generation and real-time status rendering on the checkout page.
 
 ---
