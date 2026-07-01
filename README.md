@@ -17,6 +17,7 @@
   <img src="https://img.shields.io/badge/Environment-Docker%20%2B%20MySQL-0275d8?style=flat-square&logo=docker" />
 </p>
 
+## 📝 About
 This is a payment processing and checkout API that implements the **Pix** payment method. Built using Python and Flask, the application simulates the complete payment lifecycle, from transaction creation in the database to QR Code generation and real-time status rendering on the checkout page.
 
 ---
